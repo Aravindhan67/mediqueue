@@ -41,8 +41,8 @@ function verifyJWT($token)
     if (count($tokenParts) !== 3)
         return false;
 
-    $header = base64_decode($tokenParts[0]);
-    $payload = base64_decode($tokenParts[1]);
+    $header = base64_decode(strtr($tokenParts[0], '-_', '+/'));
+    $payload = base64_decode(strtr($tokenParts[1], '-_', '+/'));
     $signatureProvided = $tokenParts[2];
 
     // Verify signature
@@ -72,7 +72,7 @@ function getUserFromToken()
 
     if (function_exists('getallheaders')) {
         $headers = getallheaders();
-        if (is_array($headers)) {
+        if ($headers && is_array($headers)) {
             if (isset($headers['Authorization'])) {
                 $token = $headers['Authorization'];
             } elseif (isset($headers['authorization'])) { // lowercase check

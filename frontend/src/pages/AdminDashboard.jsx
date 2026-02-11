@@ -17,6 +17,14 @@ const AdminDashboard = () => {
     const [patients, setPatients] = useState([])
     const [loading, setLoading] = useState(true)
     const [activeTab, setActiveTab] = useState('overview')
+    const [showAddDoctorModal, setShowAddDoctorModal] = useState(false)
+    const [newDoctor, setNewDoctor] = useState({
+        name: '',
+        email: '',
+        password: '',
+        specialization: '',
+        experience: ''
+    })
 
     useEffect(() => {
         fetchDashboardData()
@@ -65,6 +73,21 @@ const AdminDashboard = () => {
             }
         } catch (error) {
             toast.error('Failed to delete doctor')
+        }
+    }
+
+    const handleAddDoctor = async (e) => {
+        e.preventDefault()
+        try {
+            const response = await api.post('/admin/add-doctor.php', newDoctor)
+            if (response.data.success) {
+                toast.success('Doctor added successfully')
+                setShowAddDoctorModal(false)
+                setNewDoctor({ name: '', email: '', password: '', specialization: '', experience: '' })
+                fetchDashboardData()
+            }
+        } catch (error) {
+            toast.error(error.response?.data?.message || 'Failed to add doctor')
         }
     }
 
@@ -195,7 +218,18 @@ const AdminDashboard = () => {
                         {/* Doctors Tab */}
                         {activeTab === 'doctors' && (
                             <Card>
-                                <h2 className="text-2xl font-bold text-gray-900 mb-4">Manage Doctors</h2>
+                                <div className="flex justify-between items-center mb-6">
+                                    <h2 className="text-2xl font-bold text-gray-900">Manage Doctors</h2>
+                                    <button
+                                        onClick={() => setShowAddDoctorModal(true)}
+                                        className="px-4 py-2 bg-primary-600 text-white rounded-md hover:bg-primary-700 transition font-medium flex items-center gap-2"
+                                    >
+                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                            <path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd" />
+                                        </svg>
+                                        Add New Doctor
+                                    </button>
+                                </div>
                                 {doctors.length > 0 ? (
                                     <div className="overflow-x-auto">
                                         <table className="min-w-full divide-y divide-gray-200">
@@ -235,6 +269,7 @@ const AdminDashboard = () => {
                         )}
 
                         {/* Patients Tab */}
+                        {/* Patients Tab */}
                         {activeTab === 'patients' && (
                             <Card>
                                 <h2 className="text-2xl font-bold text-gray-900 mb-4">All Patients</h2>
@@ -269,6 +304,111 @@ const AdminDashboard = () => {
                             </Card>
                         )}
                     </>
+                )}
+
+                {/* Add Doctor Modal */}
+                {showAddDoctorModal && (
+                    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+                        {/* Backdrop with blur */}
+                        <div
+                            className="absolute inset-0 bg-gray-900/60 backdrop-blur-sm transition-opacity"
+                            onClick={() => setShowAddDoctorModal(false)}
+                        ></div>
+
+                        {/* Modal Container */}
+                        <div className="relative bg-white/90 backdrop-blur-md rounded-2xl shadow-2xl max-w-md w-full overflow-hidden border border-white/20 transform transition-all animate-in fade-in zoom-in duration-300">
+                            {/* Header Gradient */}
+                            <div className="bg-gradient-to-r from-primary-600 to-indigo-600 px-8 py-6">
+                                <h2 className="text-2xl font-bold text-white">Add New Doctor</h2>
+                                <p className="text-primary-100 text-sm mt-1">Create a professional profile for the new medical staff.</p>
+                            </div>
+
+                            <form onSubmit={handleAddDoctor} className="p-8 space-y-5">
+                                <div className="space-y-4">
+                                    <div>
+                                        <label className="block text-sm font-semibold text-gray-700 mb-1.5">Full Name</label>
+                                        <div className="relative">
+                                            <input
+                                                type="text"
+                                                required
+                                                placeholder="Dr. John Doe"
+                                                className="w-full pl-4 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-all placeholder:text-gray-400"
+                                                value={newDoctor.name}
+                                                onChange={(e) => setNewDoctor({ ...newDoctor, name: e.target.value })}
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div className="grid grid-cols-1 gap-4">
+                                        <div>
+                                            <label className="block text-sm font-semibold text-gray-700 mb-1.5">Email Address</label>
+                                            <input
+                                                type="email"
+                                                required
+                                                placeholder="doctor@mediqueue.com"
+                                                className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-all"
+                                                value={newDoctor.email}
+                                                onChange={(e) => setNewDoctor({ ...newDoctor, email: e.target.value })}
+                                            />
+                                        </div>
+                                        <div>
+                                            <label className="block text-sm font-semibold text-gray-700 mb-1.5">Password</label>
+                                            <input
+                                                type="password"
+                                                required
+                                                placeholder="••••••••"
+                                                className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-all"
+                                                value={newDoctor.password}
+                                                onChange={(e) => setNewDoctor({ ...newDoctor, password: e.target.value })}
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div className="grid grid-cols-2 gap-4">
+                                        <div>
+                                            <label className="block text-sm font-semibold text-gray-700 mb-1.5">Specialization</label>
+                                            <input
+                                                type="text"
+                                                required
+                                                placeholder="Cardiology"
+                                                className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-all"
+                                                value={newDoctor.specialization}
+                                                onChange={(e) => setNewDoctor({ ...newDoctor, specialization: e.target.value })}
+                                            />
+                                        </div>
+                                        <div>
+                                            <label className="block text-sm font-semibold text-gray-700 mb-1.5">Exp (Years)</label>
+                                            <input
+                                                type="number"
+                                                required
+                                                min="0"
+                                                placeholder="5"
+                                                className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-all"
+                                                value={newDoctor.experience}
+                                                onChange={(e) => setNewDoctor({ ...newDoctor, experience: e.target.value })}
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="flex items-center justify-end gap-3 pt-4">
+                                    <button
+                                        type="button"
+                                        onClick={() => setShowAddDoctorModal(false)}
+                                        className="px-6 py-2.5 text-sm font-bold text-gray-500 hover:text-gray-700 transition-colors uppercase tracking-wider"
+                                    >
+                                        Cancel
+                                    </button>
+                                    <button
+                                        type="submit"
+                                        className="px-8 py-2.5 bg-gradient-to-r from-primary-600 to-indigo-600 text-white text-sm font-bold rounded-xl hover:shadow-lg hover:shadow-primary-500/30 transform hover:-translate-y-0.5 transition-all outline-none uppercase tracking-wider"
+                                    >
+                                        Create Profile
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 )}
             </div>
         </div>

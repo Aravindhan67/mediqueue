@@ -69,22 +69,6 @@ const Register = () => {
                     <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">Register</h2>
 
                     <form onSubmit={handleSubmit} className="space-y-4">
-                        {/* Role Selection */}
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">
-                                I am a
-                            </label>
-                            <select
-                                name="role"
-                                value={formData.role}
-                                onChange={handleChange}
-                                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none"
-                            >
-                                <option value="patient">Patient</option>
-                                <option value="doctor">Doctor</option>
-                            </select>
-                        </div>
-
                         {/* Common Fields */}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
@@ -153,96 +137,57 @@ const Register = () => {
                         </div>
 
                         {/* Patient Specific Fields */}
-                        {formData.role === 'patient' && (
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                                        Age
-                                    </label>
-                                    <input
-                                        type="number"
-                                        name="age"
-                                        value={formData.age}
-                                        onChange={handleChange}
-                                        required
-                                        min="1"
-                                        max="150"
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none"
-                                        placeholder="25"
-                                    />
-                                </div>
-
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                                        Gender
-                                    </label>
-                                    <select
-                                        name="gender"
-                                        value={formData.gender}
-                                        onChange={handleChange}
-                                        required
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none"
-                                    >
-                                        <option value="">Select</option>
-                                        <option value="male">Male</option>
-                                        <option value="female">Female</option>
-                                        <option value="other">Other</option>
-                                    </select>
-                                </div>
-
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                                        Phone
-                                    </label>
-                                    <input
-                                        type="tel"
-                                        name="phone"
-                                        value={formData.phone}
-                                        onChange={handleChange}
-                                        required
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none"
-                                        placeholder="1234567890"
-                                    />
-                                </div>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-1">
+                                    Age
+                                </label>
+                                <input
+                                    type="number"
+                                    name="age"
+                                    value={formData.age}
+                                    onChange={handleChange}
+                                    required
+                                    min="1"
+                                    max="150"
+                                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none"
+                                    placeholder="25"
+                                />
                             </div>
-                        )}
 
-                        {/* Doctor Specific Fields */}
-                        {formData.role === 'doctor' && (
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                                        Specialization
-                                    </label>
-                                    <input
-                                        type="text"
-                                        name="specialization"
-                                        value={formData.specialization}
-                                        onChange={handleChange}
-                                        required
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none"
-                                        placeholder="e.g., Cardiologist"
-                                    />
-                                </div>
-
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                                        Experience (years)
-                                    </label>
-                                    <input
-                                        type="number"
-                                        name="experience"
-                                        value={formData.experience}
-                                        onChange={handleChange}
-                                        required
-                                        min="0"
-                                        max="60"
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none"
-                                        placeholder="5"
-                                    />
-                                </div>
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-1">
+                                    Gender
+                                </label>
+                                <select
+                                    name="gender"
+                                    value={formData.gender}
+                                    onChange={handleChange}
+                                    required
+                                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none"
+                                >
+                                    <option value="">Select</option>
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                    <option value="other">Other</option>
+                                </select>
                             </div>
-                        )}
+
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-1">
+                                    Phone
+                                </label>
+                                <input
+                                    type="tel"
+                                    name="phone"
+                                    value={formData.phone}
+                                    onChange={handleChange}
+                                    required
+                                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none"
+                                    placeholder="1234567890"
+                                />
+                            </div>
+                        </div>
 
                         <button
                             type="submit"

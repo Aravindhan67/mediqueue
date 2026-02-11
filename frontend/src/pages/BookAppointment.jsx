@@ -142,12 +142,19 @@ const BookAppointment = () => {
                                             setSelectedTime('')
                                         }}
                                         required
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none"
+                                        disabled={availableDates.length === 0}
+                                        className={`w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none ${availableDates.length === 0 ? 'bg-gray-50 cursor-not-allowed text-gray-400' : ''}`}
                                     >
-                                        <option value="">Choose a date</option>
-                                        {availableDates.map(date => (
-                                            <option key={date} value={date}>{date}</option>
-                                        ))}
+                                        {availableDates.length === 0 ? (
+                                            <option value="">No dates available</option>
+                                        ) : (
+                                            <>
+                                                <option value="">Choose a date</option>
+                                                {availableDates.map(date => (
+                                                    <option key={date} value={date}>{date}</option>
+                                                ))}
+                                            </>
+                                        )}
                                     </select>
                                 </div>
 
