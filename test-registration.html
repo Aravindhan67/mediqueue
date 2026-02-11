@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+
+        .test-section {
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+
+        #result {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 4px;
+            white-space: pre-wrap;
+            font-family: monospace;
+        }
+
+        .success {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>MediQueue Registration Test</h1>
+
+    <div class="test-section">
+        <h2>Test Registration API</h2>
+        <p>This will test the registration endpoint with valid data</p>
+        <button onclick="testRegistration()">Test Patient Registration</button>
+        <button onclick="testDoctorRegistration()">Test Doctor Registration</button>
+        <button onclick="testInvalidData()">Test Invalid Data</button>
+    </div>
+
+    <div id="result"></div>
+
+    <script>
+        const API_BASE = 'http://localhost/hospital-backend/api';
+
+        function showResult(title, data, isSuccess) {
+            const resultDiv = document.getElementById('result');
+            resultDiv.className = isSuccess ? 'success' : 'error';
+            resultDiv.innerHTML = `<h3>${title}</h3><pre>${JSON.stringify(data, null, 2)}</pre>`;
+        }
+
+        async function testRegistration() {
+            console.log('Testing patient registration...');
+
+            const testData = {
+                name: 'Test Patient',
+                email: 'testpatient' + Date.now() + '@example.com',
+                password: 'password123',
+                confirmPassword: 'password123',
+                role: 'patient',
+                age: '25',
+                gender: 'male',
+                phone: '9876543210'
+            };
+
+            try {
+                console.log('Sending request:', testData);
+
+                const response = await fetch(`${API_BASE}/auth/register.php`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(testData)
+                });
+
+                console.log('Response status:', response.status);
+
+                const data = await response.json();
+                console.log('Response data:', data);
+
+                showResult('Patient Registration Test', {
+                    request: testData,
+                    response: data,
+                    status: response.status
+                }, data.success);
+
+            } catch (error) {
+                console.error('Error:', error);
+                showResult('Error', {
+                    message: error.message,
+                    error: error.toString()
+                }, false);
+            }
+        }
+
+        async function testDoctorRegistration() {
+            console.log('Testing doctor registration...');
+
+            const testData = {
+                name: 'Dr. Test',
+                email: 'testdoctor' + Date.now() + '@example.com',
+                password: 'password123',
+                confirmPassword: 'password123',
+                role: 'doctor',
+                specialization: 'Cardiologist',
+                experience: '10'
+            };
+
+            try {
+                console.log('Sending request:', testData);
+
+                const response = await fetch(`${API_BASE}/auth/register.php`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(testData)
+                });
+
+                console.log('Response status:', response.status);
+
+                const data = await response.json();
+                console.log('Response data:', data);
+
+                showResult('Doctor Registration Test', {
+                    request: testData,
+                    response: data,
+                    status: response.status
+                }, data.success);
+
+            } catch (error) {
+                console.error('Error:', error);
+                showResult('Error', {
+                    message: error.message,
+                    error: error.toString()
+                }, false);
+            }
+        }
+
+        async function testInvalidData() {
+            console.log('Testing with invalid data...');
+
+            const testData = {
+                name: 'Test User',
+                email: 'invalid-test@example.com',
+                password: '123', // Too short
+                role: 'patient'
+                // Missing required fields
+            };
+
+            try {
+                console.log('Sending request:', testData);
+
+                const response = await fetch(`${API_BASE}/auth/register.php`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(testData)
+                });
+
+                console.log('Response status:', response.status);
+
+                const data = await response.json();
+                console.log('Response data:', data);
+
+                showResult('Invalid Data Test (Should Fail)', {
+                    request: testData,
+                    response: data,
+                    status: response.status
+                }, !data.success); // Success if it fails properly
+
+            } catch (error) {
+                console.error('Error:', error);
+                showResult('Error', {
+                    message: error.message,
+                    error: error.toString()
+                }, false);
+            }
+        }
+    </script>
+</body>
+
+</html>
