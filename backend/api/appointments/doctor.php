@@ -33,7 +33,7 @@ try {
         sendJsonError('Doctor profile not found', 404);
     }
 
-    $query = "SELECT a.*, u.name as patient_name, u.email as patient_email, p.age, p.gender 
+    $query = "SELECT a.*, u.name as patient_name, u.email as patient_email, p.age, p.gender, p.phone 
               FROM appointments a 
               JOIN patients p ON a.patient_id = p.id 
               JOIN users u ON p.user_id = u.id 

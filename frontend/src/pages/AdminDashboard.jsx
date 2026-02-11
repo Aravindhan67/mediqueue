@@ -13,6 +13,8 @@ const AdminDashboard = () => {
         pendingAppointments: 0
     })
     const [appointments, setAppointments] = useState([])
+    const [filteredAppointments, setFilteredAppointments] = useState([])
+    const [statusFilter, setStatusFilter] = useState('all')
     const [doctors, setDoctors] = useState([])
     const [patients, setPatients] = useState([])
     const [loading, setLoading] = useState(true)
@@ -53,6 +55,8 @@ const AdminDashboard = () => {
                     totalAppointments: apps.length,
                     pendingAppointments: apps.filter(a => a.status === 'pending').length
                 })
+
+                setFilteredAppointments(apps)
             }
         } catch (error) {
             toast.error('Failed to load dashboard data')
@@ -60,6 +64,14 @@ const AdminDashboard = () => {
             setLoading(false)
         }
     }
+
+    useEffect(() => {
+        if (statusFilter === 'all') {
+            setFilteredAppointments(appointments)
+        } else {
+            setFilteredAppointments(appointments.filter(a => a.status === statusFilter))
+        }
+    }, [statusFilter, appointments])
 
     const handleDeleteDoctor = async (doctorId) => {
         if (!confirm('Are you sure you want to delete this doctor?')) return
@@ -107,7 +119,7 @@ const AdminDashboard = () => {
     }
 
     return (
-        <div className="min-h-screen bg-gray-50">
+        <div className="min-h-screen bg-[#F0FDF4]">
             <Navbar />
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -115,7 +127,7 @@ const AdminDashboard = () => {
                     <h1 className="text-3xl font-bold text-gray-900">Admin Dashboard</h1>
                     <button
                         onClick={exportToCSV}
-                        className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition font-medium"
+                        className="px-6 py-2.5 bg-[#16A34A] text-white rounded-xl hover:bg-[#15803d] transition-all font-black uppercase tracking-widest text-xs shadow-lg shadow-[#16A34A]/20 active:scale-95 animate-medical-pulse"
                     >
                         Export Report (CSV)
                     </button>
@@ -129,24 +141,24 @@ const AdminDashboard = () => {
                     <>
                         {/* Stats Cards */}
                         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-                            <Card className="bg-gradient-to-br from-blue-50 to-blue-100 border-l-4 border-blue-500">
-                                <h3 className="text-lg font-semibold text-gray-700 mb-2">Total Patients</h3>
-                                <p className="text-4xl font-bold text-blue-600">{stats.totalPatients}</p>
+                            <Card className="bg-white border-b-4 border-[#16A34A] shadow-lg shadow-[#16A34A]/5 hover-lift">
+                                <h3 className="text-xs font-black text-[#16A34A] uppercase tracking-widest mb-2 opacity-70">Total Patients</h3>
+                                <p className="text-4xl font-black text-[#111827]">{stats.totalPatients}</p>
                             </Card>
 
-                            <Card className="bg-gradient-to-br from-green-50 to-green-100 border-l-4 border-green-500">
-                                <h3 className="text-lg font-semibold text-gray-700 mb-2">Total Doctors</h3>
-                                <p className="text-4xl font-bold text-green-600">{stats.totalDoctors}</p>
+                            <Card className="bg-white border-b-4 border-[#86EFAC] shadow-lg shadow-[#86EFAC]/5 hover-lift">
+                                <h3 className="text-xs font-black text-[#16A34A] uppercase tracking-widest mb-2 opacity-70">Total Doctors</h3>
+                                <p className="text-4xl font-black text-[#111827]">{stats.totalDoctors}</p>
                             </Card>
 
-                            <Card className="bg-gradient-to-br from-purple-50 to-purple-100 border-l-4 border-purple-500">
-                                <h3 className="text-lg font-semibold text-gray-700 mb-2">Total Appointments</h3>
-                                <p className="text-4xl font-bold text-purple-600">{stats.totalAppointments}</p>
+                            <Card className="bg-white border-b-4 border-[#3B82F6] shadow-lg shadow-[#3B82F6]/5 hover-lift">
+                                <h3 className="text-xs font-black text-[#3B82F6] uppercase tracking-widest mb-2 opacity-70">Total Appts</h3>
+                                <p className="text-4xl font-black text-[#111827]">{stats.totalAppointments}</p>
                             </Card>
 
-                            <Card className="bg-gradient-to-br from-yellow-50 to-yellow-100 border-l-4 border-yellow-500">
-                                <h3 className="text-lg font-semibold text-gray-700 mb-2">Pending</h3>
-                                <p className="text-4xl font-bold text-yellow-600">{stats.pendingAppointments}</p>
+                            <Card className="bg-white border-b-4 border-yellow-400 shadow-lg shadow-yellow-400/5 hover-lift">
+                                <h3 className="text-xs font-black text-yellow-600 uppercase tracking-widest mb-2 opacity-70">Pending</h3>
+                                <p className="text-4xl font-black text-[#111827]">{stats.pendingAppointments}</p>
                             </Card>
                         </div>
 
@@ -155,19 +167,19 @@ const AdminDashboard = () => {
                             <div className="flex space-x-2 border-b border-gray-200">
                                 <button
                                     onClick={() => setActiveTab('overview')}
-                                    className={`px-4 py-2 font-medium ${activeTab === 'overview' ? 'border-b-2 border-primary-600 text-primary-600' : 'text-gray-600 hover:text-gray-900'}`}
+                                    className={`px-6 py-3 text-xs font-black uppercase tracking-widest transition-all ${activeTab === 'overview' ? 'border-b-2 border-[#16A34A] text-[#16A34A]' : 'text-gray-400 hover:text-[#111827]'}`}
                                 >
                                     Appointments
                                 </button>
                                 <button
                                     onClick={() => setActiveTab('doctors')}
-                                    className={`px-4 py-2 font-medium ${activeTab === 'doctors' ? 'border-b-2 border-primary-600 text-primary-600' : 'text-gray-600 hover:text-gray-900'}`}
+                                    className={`px-6 py-3 text-xs font-black uppercase tracking-widest transition-all ${activeTab === 'doctors' ? 'border-b-2 border-[#16A34A] text-[#16A34A]' : 'text-gray-400 hover:text-[#111827]'}`}
                                 >
                                     Doctors
                                 </button>
                                 <button
                                     onClick={() => setActiveTab('patients')}
-                                    className={`px-4 py-2 font-medium ${activeTab === 'patients' ? 'border-b-2 border-primary-600 text-primary-600' : 'text-gray-600 hover:text-gray-900'}`}
+                                    className={`px-6 py-3 text-xs font-black uppercase tracking-widest transition-all ${activeTab === 'patients' ? 'border-b-2 border-[#16A34A] text-[#16A34A]' : 'text-gray-400 hover:text-[#111827]'}`}
                                 >
                                     Patients
                                 </button>
@@ -177,29 +189,57 @@ const AdminDashboard = () => {
                         {/* Appointments Tab */}
                         {activeTab === 'overview' && (
                             <Card>
-                                <h2 className="text-2xl font-bold text-gray-900 mb-4">All Appointments</h2>
-                                {appointments.length > 0 ? (
+                                <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
+                                    <h2 className="text-2xl font-bold text-gray-900">All Appointments</h2>
+                                    <div className="flex bg-gray-100 p-1 rounded-lg">
+                                        {['all', 'pending', 'completed', 'cancelled'].map((status) => (
+                                            <button
+                                                key={status}
+                                                onClick={() => setStatusFilter(status)}
+                                                className={`px-4 py-1.5 text-[10px] font-black uppercase tracking-widest rounded-lg transition-all ${statusFilter === status
+                                                    ? 'bg-[#16A34A] text-white shadow-lg shadow-[#16A34A]/20'
+                                                    : 'text-gray-400 hover:text-[#111827]'
+                                                    }`}
+                                            >
+                                                {status}
+                                            </button>
+                                        ))}
+                                    </div>
+                                </div>
+                                {filteredAppointments.length > 0 ? (
                                     <div className="overflow-x-auto">
                                         <table className="min-w-full divide-y divide-gray-200">
                                             <thead className="bg-gray-50">
                                                 <tr>
                                                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Patient</th>
+                                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Details</th>
                                                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Doctor</th>
-                                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
-                                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Time</th>
+                                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Schedule</th>
                                                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
                                                 </tr>
                                             </thead>
                                             <tbody className="bg-white divide-y divide-gray-200">
-                                                {appointments.map((appointment) => (
-                                                    <tr key={appointment.id}>
-                                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{appointment.patient_name}</td>
-                                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{appointment.doctor_name}</td>
-                                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{appointment.date}</td>
-                                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{appointment.time}</td>
+                                                {filteredAppointments.map((appointment) => (
+                                                    <tr key={appointment.id} className="hover:bg-gray-50 transition">
                                                         <td className="px-6 py-4 whitespace-nowrap">
-                                                            <span className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${appointment.status === 'completed' ? 'bg-green-100 text-green-800' :
-                                                                appointment.status === 'cancelled' ? 'bg-red-100 text-red-800' :
+                                                            <div className="text-sm font-medium text-gray-900">{appointment.patient_name}</div>
+                                                            <div className="text-xs text-gray-500">{appointment.patient_email}</div>
+                                                        </td>
+                                                        <td className="px-6 py-4 whitespace-nowrap">
+                                                            <div className="text-sm text-gray-900">{appointment.age} yrs, {appointment.gender}</div>
+                                                            <div className="text-xs text-gray-500">{appointment.phone}</div>
+                                                        </td>
+                                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                                            <div>{appointment.doctor_name}</div>
+                                                            <div className="text-xs font-bold text-[#16A34A] uppercase tracking-tighter">{appointment.specialization}</div>
+                                                        </td>
+                                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                                            <div>{appointment.date}</div>
+                                                            <div className="text-xs font-medium">{appointment.time}</div>
+                                                        </td>
+                                                        <td className="px-6 py-4 whitespace-nowrap">
+                                                            <span className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${appointment.status === 'completed' ? 'bg-green-100 text-green-500' :
+                                                                appointment.status === 'cancelled' ? 'bg-red-100 text-red-500' :
                                                                     'bg-yellow-100 text-yellow-800'}`}>
                                                                 {appointment.status}
                                                             </span>
@@ -210,7 +250,7 @@ const AdminDashboard = () => {
                                         </table>
                                     </div>
                                 ) : (
-                                    <p className="text-gray-500 text-center py-8">No appointments yet</p>
+                                    <p className="text-gray-500 text-center py-8">No appointments found for this status</p>
                                 )}
                             </Card>
                         )}
@@ -222,9 +262,9 @@ const AdminDashboard = () => {
                                     <h2 className="text-2xl font-bold text-gray-900">Manage Doctors</h2>
                                     <button
                                         onClick={() => setShowAddDoctorModal(true)}
-                                        className="px-4 py-2 bg-primary-600 text-white rounded-md hover:bg-primary-700 transition font-medium flex items-center gap-2"
+                                        className="px-6 py-2.5 bg-[#16A34A] text-white rounded-xl hover:bg-[#15803d] transition-all font-black uppercase tracking-widest text-[10px] shadow-lg shadow-[#16A34A]/20 flex items-center gap-2 active:scale-95"
                                     >
-                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
                                             <path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd" />
                                         </svg>
                                         Add New Doctor
@@ -318,9 +358,9 @@ const AdminDashboard = () => {
                         {/* Modal Container */}
                         <div className="relative bg-white/90 backdrop-blur-md rounded-2xl shadow-2xl max-w-md w-full overflow-hidden border border-white/20 transform transition-all animate-in fade-in zoom-in duration-300">
                             {/* Header Gradient */}
-                            <div className="bg-gradient-to-r from-primary-600 to-indigo-600 px-8 py-6">
-                                <h2 className="text-2xl font-bold text-white">Add New Doctor</h2>
-                                <p className="text-primary-100 text-sm mt-1">Create a professional profile for the new medical staff.</p>
+                            <div className="bg-gradient-to-r from-[#16A34A] to-[#86EFAC] px-8 py-8">
+                                <h2 className="text-2xl font-black text-white uppercase tracking-tight">Add New Doctor</h2>
+                                <p className="text-[#115e59] text-xs font-bold uppercase tracking-widest opacity-80 mt-1">Medical Staff Onboarding</p>
                             </div>
 
                             <form onSubmit={handleAddDoctor} className="p-8 space-y-5">
@@ -401,7 +441,7 @@ const AdminDashboard = () => {
                                     </button>
                                     <button
                                         type="submit"
-                                        className="px-8 py-2.5 bg-gradient-to-r from-primary-600 to-indigo-600 text-white text-sm font-bold rounded-xl hover:shadow-lg hover:shadow-primary-500/30 transform hover:-translate-y-0.5 transition-all outline-none uppercase tracking-wider"
+                                        className="px-8 py-3 bg-[#16A34A] text-white text-[10px] font-black rounded-xl hover:shadow-xl hover:shadow-[#16A34A]/30 transform hover:-translate-y-0.5 transition-all outline-none uppercase tracking-widest active:scale-95"
                                     >
                                         Create Profile
                                     </button>

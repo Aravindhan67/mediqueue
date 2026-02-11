@@ -14,7 +14,10 @@ try {
     $query = "SELECT a.*, 
               u1.name as patient_name,
               u2.name as doctor_name,
-              d.specialization
+              d.specialization,
+              p.age,
+              p.gender,
+              p.phone
               FROM appointments a
               INNER JOIN patients p ON a.patient_id = p.id
               INNER JOIN users u1 ON p.user_id = u1.id

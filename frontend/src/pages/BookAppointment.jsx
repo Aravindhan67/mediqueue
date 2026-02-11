@@ -95,7 +95,7 @@ const BookAppointment = () => {
     }
 
     return (
-        <div className="min-h-screen bg-gray-50">
+        <div className="min-h-screen bg-[#F0FDF4]">
             <Navbar />
 
             <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -112,13 +112,13 @@ const BookAppointment = () => {
                             <h2 className="text-xl font-bold text-gray-900 mb-4">Doctor Information</h2>
                             {doctor && (
                                 <div>
-                                    <div className="w-20 h-20 bg-primary-100 rounded-full flex items-center justify-center mb-4">
-                                        <span className="text-3xl font-bold text-primary-600">
+                                    <div className="w-20 h-20 bg-[#16A34A]/10 rounded-2xl flex items-center justify-center mb-6 shadow-lg shadow-[#16A34A]/5">
+                                        <span className="text-3xl font-black text-[#16A34A]">
                                             {doctor.name.charAt(0)}
                                         </span>
                                     </div>
-                                    <h3 className="text-2xl font-bold text-gray-900 mb-2">{doctor.name}</h3>
-                                    <p className="text-primary-600 font-medium mb-4">{doctor.specialization}</p>
+                                    <h3 className="text-2xl font-black text-[#111827] mb-2 tracking-tight">{doctor.name}</h3>
+                                    <p className="text-[#16A34A] font-black uppercase tracking-widest text-[10px] mb-6">{doctor.specialization}</p>
                                     <div className="space-y-2 text-sm">
                                         <p><span className="font-semibold">Experience:</span> {doctor.experience} years</p>
                                         <p><span className="font-semibold">Email:</span> {doctor.email}</p>
@@ -143,7 +143,7 @@ const BookAppointment = () => {
                                         }}
                                         required
                                         disabled={availableDates.length === 0}
-                                        className={`w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none ${availableDates.length === 0 ? 'bg-gray-50 cursor-not-allowed text-gray-400' : ''}`}
+                                        className={`w-full px-5 py-3 bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#16A34A] focus:border-transparent outline-none transition-all shadow-sm ${availableDates.length === 0 ? 'bg-gray-50 cursor-not-allowed text-gray-400' : ''}`}
                                     >
                                         {availableDates.length === 0 ? (
                                             <option value="">No dates available</option>
@@ -171,11 +171,11 @@ const BookAppointment = () => {
                                                         type="button"
                                                         onClick={() => setSelectedTime(slot.value)}
                                                         disabled={!slot.available}
-                                                        className={`py-2 px-4 rounded-md font-medium transition ${selectedTime === slot.value
-                                                            ? 'bg-primary-600 text-white'
+                                                        className={`py-3 px-4 rounded-xl font-black text-[10px] uppercase tracking-widest transition-all ${selectedTime === slot.value
+                                                            ? 'bg-[#16A34A] text-white shadow-lg shadow-[#16A34A]/20 scale-[0.98]'
                                                             : slot.available
-                                                                ? 'bg-gray-100 text-gray-900 hover:bg-gray-200'
-                                                                : 'bg-gray-50 text-gray-400 cursor-not-allowed'
+                                                                ? 'bg-white border border-gray-100 text-[#111827] hover:border-[#16A34A] hover:bg-gray-50'
+                                                                : 'bg-gray-50 text-gray-300 cursor-not-allowed opacity-50'
                                                             }`}
                                                     >
                                                         {slot.start}
@@ -192,9 +192,9 @@ const BookAppointment = () => {
                                 <button
                                     type="submit"
                                     disabled={booking || !selectedDate || !selectedTime}
-                                    className="w-full bg-primary-600 text-white py-2 px-4 rounded-md hover:bg-primary-700 transition disabled:opacity-50 disabled:cursor-not-allowed font-medium"
+                                    className="w-full bg-[#16A34A] text-white py-4 px-6 rounded-2xl hover:bg-[#15803d] transition-all disabled:opacity-50 disabled:cursor-not-allowed font-black uppercase tracking-widest shadow-xl shadow-[#16A34A]/10 active:scale-[0.98] transform mt-6"
                                 >
-                                    {booking ? 'Booking...' : 'Confirm Booking'}
+                                    {booking ? 'Processing...' : 'Confirm Appointment'}
                                 </button>
                             </form>
                         </Card>
