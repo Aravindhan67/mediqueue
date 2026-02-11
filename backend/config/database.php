@@ -4,13 +4,13 @@
  * Update these values according to your XAMPP setup
  */
 
-define('DB_HOST', 'localhost');
-define('DB_USER', 'root');
-define('DB_PASS', ''); // Default XAMPP password is empty
-define('DB_NAME', 'mediqueue');
+define('DB_HOST', getenv('DB_HOST') ?: 'localhost');
+define('DB_USER', getenv('DB_USER') ?: 'root');
+define('DB_PASS', getenv('DB_PASS') ?: '');
+define('DB_NAME', getenv('DB_NAME') ?: 'mediqueue');
 
 // JWT Secret Key (Change this in production)
-define('JWT_SECRET', 'your_secret_key_change_this_in_production');
+define('JWT_SECRET', getenv('JWT_SECRET') ?: 'your_secret_key_change_this_in_production');
 
 /**
  * Database Connection Class
