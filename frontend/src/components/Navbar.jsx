@@ -1,13 +1,16 @@
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 
 const Navbar = () => {
     const { user, logout } = useAuth()
     const navigate = useNavigate()
+    const [isMenuOpen, setIsMenuOpen] = useState(false)
 
     const handleLogout = () => {
         logout()
         navigate('/login')
+        setIsMenuOpen(false)
     }
 
     return (
@@ -24,26 +27,68 @@ const Navbar = () => {
                     </div>
 
                     {user && (
-                        <div className="flex items-center space-x-6">
-                            <div className="hidden sm:flex flex-col items-end">
-                                <span className="text-sm font-bold text-[#111827]">
-                                    {user.name}
-                                </span>
-                                <span className="text-[10px] font-black uppercase tracking-widest text-[#16A34A]">
-                                    {user.role} Account
-                                </span>
+                        <>
+                            {/* Desktop Menu */}
+                            <div className="hidden md:flex items-center space-x-6">
+                                <div className="flex flex-col items-end">
+                                    <span className="text-sm font-bold text-[#111827]">
+                                        {user.name}
+                                    </span>
+                                    <span className="text-[10px] font-black uppercase tracking-widest text-[#16A34A]">
+                                        {user.role} Account
+                                    </span>
+                                </div>
+                                <div className="h-8 w-[1px] bg-gray-200"></div>
+                                <button
+                                    onClick={handleLogout}
+                                    className="px-6 py-2.5 text-xs font-black uppercase tracking-widest text-white bg-[#EF4444] rounded-xl hover:bg-red-700 transition-all shadow-lg shadow-red-500/20 active:scale-95"
+                                >
+                                    Sign Out
+                                </button>
                             </div>
-                            <div className="h-8 w-[1px] bg-gray-200 hidden sm:block"></div>
-                            <button
-                                onClick={handleLogout}
-                                className="px-6 py-2.5 text-xs font-black uppercase tracking-widest text-white bg-[#EF4444] rounded-xl hover:bg-red-700 transition-all shadow-lg shadow-red-500/20 active:scale-95"
-                            >
-                                Sign Out
-                            </button>
-                        </div>
+
+                            {/* Mobile Hamburger Toggle */}
+                            <div className="md:hidden flex items-center">
+                                <button
+                                    onClick={() => setIsMenuOpen(!isMenuOpen)}
+                                    className="p-2 text-[#111827] focus:outline-none"
+                                >
+                                    <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        {isMenuOpen ? (
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" />
+                                        ) : (
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M4 6h16M4 12h16M4 18h16" />
+                                        )}
+                                    </svg>
+                                </button>
+                            </div>
+                        </>
                     )}
                 </div>
             </div>
+
+            {/* Mobile Menu Content */}
+            {user && isMenuOpen && (
+                <div className="md:hidden bg-white border-t border-gray-100 animate-in slide-in-from-top duration-300">
+                    <div className="px-4 pt-4 pb-6 space-y-4">
+                        <div className="flex items-center gap-4 p-4 bg-[#F0FDF4] rounded-2xl">
+                            <div className="w-12 h-12 bg-[#16A34A] rounded-xl flex items-center justify-center font-black text-white text-xl">
+                                {user.name.charAt(0)}
+                            </div>
+                            <div>
+                                <p className="text-sm font-bold text-[#111827]">{user.name}</p>
+                                <p className="text-[10px] font-black uppercase tracking-widest text-[#16A34A]">{user.role} Account</p>
+                            </div>
+                        </div>
+                        <button
+                            onClick={handleLogout}
+                            className="w-full py-4 text-sm font-black uppercase tracking-widest text-white bg-[#EF4444] rounded-2xl shadow-lg shadow-red-500/20 active:scale-[0.98] transition-all"
+                        >
+                            Sign Out Account
+                        </button>
+                    </div>
+                </div>
+            )}
         </nav>
     )
 }

@@ -142,6 +142,21 @@ http://localhost/phpmyadmin
 
 ---
 
+## 📅 Schedule Issues
+
+### "No schedules available for this doctor yet"
+**Issue:** Schedules are date-based. If no schedules are created for today or future dates, the frontend will show this message.
+
+**Solution:**
+1. Open your browser and visit:
+   ```
+   http://localhost/hospital-backend/api/debug_seed_schedules.php
+   ```
+2. This script will automatically create 7 days of schedules for all doctors.
+3. Refresh the booking page, and the dates should now appear.
+
+---
+
 ## Need Help?
 
 If still not working, check:

@@ -123,45 +123,47 @@ const PatientDashboard = () => {
                             <Loader />
                         </div>
                     ) : appointments.length > 0 ? (
-                        <div className="overflow-x-auto">
-                            <table className="min-w-full">
-                                <thead className="bg-gray-50 rounded-lg">
-                                    <tr>
-                                        <th className="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-widest">Doctor</th>
-                                        <th className="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-widest">Date & Time</th>
-                                        <th className="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-widest">Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody className="divide-y divide-gray-100">
-                                    {appointments.map((appointment) => (
-                                        <tr key={appointment.id} className="hover:bg-gray-50/50 transition-colors">
-                                            <td className="px-6 py-4">
-                                                <div className="flex items-center">
-                                                    <div className="w-10 h-10 bg-[#16A34A]/10 rounded-xl flex items-center justify-center mr-3 font-black text-[#16A34A]">
-                                                        {appointment.doctor_name.charAt(0)}
-                                                    </div>
-                                                    <div>
-                                                        <div className="text-sm font-bold text-gray-900">{appointment.doctor_name}</div>
-                                                        <div className="text-xs text-gray-500">{appointment.specialization}</div>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td className="px-6 py-4">
-                                                <div className="text-sm font-semibold text-gray-900">{appointment.date}</div>
-                                                <div className="text-xs text-primary-600 font-medium">{appointment.time}</div>
-                                            </td>
-                                            <td className="px-6 py-4">
-                                                <span className={`px-3 py-1 text-[10px] font-black uppercase tracking-widest rounded-full 
-                                                    ${appointment.status === 'completed' ? 'bg-green-100 text-green-500' :
-                                                        appointment.status === 'cancelled' ? 'bg-red-100 text-red-500' :
-                                                            'bg-yellow-100 text-yellow-800'}`}>
-                                                    {appointment.status}
-                                                </span>
-                                            </td>
+                        <div className="overflow-x-auto -mx-6 px-6">
+                            <div className="min-w-[600px] md:min-w-full">
+                                <table className="min-w-full">
+                                    <thead className="bg-gray-50 rounded-lg">
+                                        <tr>
+                                            <th className="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-widest">Doctor</th>
+                                            <th className="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-widest">Date & Time</th>
+                                            <th className="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-widest">Status</th>
                                         </tr>
-                                    ))}
-                                </tbody>
-                            </table>
+                                    </thead>
+                                    <tbody className="divide-y divide-gray-100">
+                                        {appointments.map((appointment) => (
+                                            <tr key={appointment.id} className="hover:bg-gray-50/50 transition-colors">
+                                                <td className="px-6 py-4">
+                                                    <div className="flex items-center">
+                                                        <div className="w-10 h-10 bg-[#16A34A]/10 rounded-xl flex items-center justify-center mr-3 font-black text-[#16A34A]">
+                                                            {appointment.doctor_name.charAt(0)}
+                                                        </div>
+                                                        <div>
+                                                            <div className="text-sm font-bold text-gray-900">{appointment.doctor_name}</div>
+                                                            <div className="text-xs text-gray-500">{appointment.specialization}</div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td className="px-6 py-4">
+                                                    <div className="text-sm font-semibold text-gray-900">{appointment.date}</div>
+                                                    <div className="text-xs text-primary-600 font-medium">{appointment.time}</div>
+                                                </td>
+                                                <td className="px-6 py-4">
+                                                    <span className={`px-3 py-1 text-[10px] font-black uppercase tracking-widest rounded-full 
+                                                        ${appointment.status === 'completed' ? 'bg-green-100 text-green-500' :
+                                                            appointment.status === 'cancelled' ? 'bg-red-100 text-red-500' :
+                                                                'bg-yellow-100 text-yellow-800'}`}>
+                                                        {appointment.status}
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     ) : (
                         <div className="text-center py-10 bg-gray-50 rounded-xl border border-dashed border-gray-200">
